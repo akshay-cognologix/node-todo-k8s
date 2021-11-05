@@ -5,6 +5,9 @@ metadata:
     app: microservice-app-example
   name: zipkin
 spec:
+  selector:
+    matchLabels:
+      app: microservice-app-example
   replicas: 1
   template:
     metadata:
