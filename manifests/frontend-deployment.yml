@@ -2,18 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: microservice-app-example
-  name: frontend
+    app: frontend
+  name: frontend-deployment
 spec:
   selector:
     matchLabels:
-      app: microservice-app-example
+      app: frontend
   replicas: 1
   template:
     metadata:
       labels:
-        app: microservice-app-example
-        service: frontend
+        app: frontend
     spec:
       containers:
       - env:
@@ -25,9 +24,9 @@ spec:
           value: http://todos-api:8082
         - name: ZIPKIN_URL
           value: http://zipkin:9411/api/v2/spans
-        image: frontend
+        image: akshaycgnlxdevops/frontend
         name: frontend
         ports:
         - containerPort: 8080
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
       restartPolicy: Always

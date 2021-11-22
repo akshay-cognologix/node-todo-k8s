@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: microservice-app-example
+    app: users-api
   name: users-api
 spec:
   selector:
     matchLabels:
-      app: microservice-app-example
+      app: users-api
   replicas: 1
   template:
     metadata:
       labels:
-        app: microservice-app-example
+        app: users-api
         service: users-api
     spec:
       containers:
@@ -23,9 +23,9 @@ spec:
           value: "8083"
         - name: SPRING_ZIPKIN_BASE_URL
           value: http://zipkin:9411
-        image: users-api
+        image: akshaycgnlxdevops/users-api
         name: users-api
         ports:
         - containerPort: 8083
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
       restartPolicy: Always

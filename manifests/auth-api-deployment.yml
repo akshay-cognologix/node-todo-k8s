@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: microservice-app-example
-  name: auth-api
+    app: auth-api
+  name: auth-api-deployment
 spec:
   selector:
     matchLabels:
-      app: microservice-app-example
+      app: auth-api
   replicas: 1
   template:
     metadata:
       labels:
-        app: microservice-app-example
+        app: auth-api
         service: auth-api
     spec:
       containers:
@@ -25,9 +25,9 @@ spec:
           value: http://users-api:8083
         - name: ZIPKIN_URL
           value: http://zipkin:9411/api/v2/spans          
-        image: auth-api
+        image: akshaycgnlxdevops/auth-api
         name: auth-api
         ports:
         - containerPort: 8081
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
       restartPolicy: Always
