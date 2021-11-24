@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.usersapi.fullname" . }}
+  labels:
+    {{- include "node-todo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.usersapi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.usersapi.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.usersapi.matchLabels" . | nindent 8 }}
+        {{- if .Values.usersapi.podLabels}}
+        #{{ toYaml .Values.usersapi.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.usersapi.name }}
+          image: "{{ .Values.usersapi.image.repository }}:{{ .Values.usersapi.image.tag }}"
+          imagePullPolicy: {{ .Values.usersapi.image.pullPolicy }}
+          env:
+            - name: JWT_SECRET
+              value: myfancysecret
+            - name: SERVER_PORT
+              value: "8083"
+            - name: SPRING_ZIPKIN_BASE_URL
+              value: http://zipkin:9411
+          ports:
+            - containerPort: 8083
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.usersapi.resources | nindent 12 }}

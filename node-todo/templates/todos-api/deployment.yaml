@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.todosapi.fullname" . }}
+  labels:
+    {{- include "node-todo.todosapi.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.todosapi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.todosapi.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.todosapi.matchLabels" . | nindent 8 }}
+        {{- if .Values.todosapi.podLabels}}
+        #{{ toYaml .Values.todosapi.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.todosapi.name }}
+          image: "{{ .Values.todosapi.image.repository }}:{{ .Values.todosapi.image.tag }}"
+          imagePullPolicy: {{ .Values.todosapi.image.pullPolicy }}
+          env:
+            - name: JWT_SECRET
+              value: myfancysecret
+            - name: TODO_API_PORT
+              value: "8082"
+            - name: REDIS_HOST
+              value: redis-queue
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_CHANNEL
+              value: log_channel
+            - name: ZIPKIN_URL
+              value: http://zipkin:9411/api/v2/spans
+          ports:
+            - containerPort: 8082
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.todosapi.resources | nindent 12 }}

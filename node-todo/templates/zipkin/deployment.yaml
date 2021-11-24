@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.zipkin.fullname" . }}
+  labels:
+    {{- include "node-todo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.zipkin.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.zipkin.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.zipkin.matchLabels" . | nindent 8 }}
+        {{- if .Values.zipkin.podLabels}}
+        {{ toYaml .Values.zipkin.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.zipkin.name }}
+          image: "{{ .Values.zipkin.image.repository }}:{{ .Values.zipkin.image.tag }}"
+          imagePullPolicy: {{ .Values.zipkin.image.pullPolicy }}
+          ports:
+            - containerPort: 9411
+            - containerPort: 9411
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.zipkin.resources | nindent 12 }}

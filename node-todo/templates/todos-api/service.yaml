@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "node-todo.todosapi.fullname" . }}
+  labels:
+    {{- include "node-todo.todosapi.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.todosapi.service.type }}
+  ports:
+    - port: {{ .Values.todosapi.service.port }}
+      targetPort: 8082
+  selector:
+    {{- include "node-todo.todosapi.matchLabels" . | nindent 4 }}

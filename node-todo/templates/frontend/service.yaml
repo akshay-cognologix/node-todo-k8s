@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "node-todo.frontend.fullname" . }}
+  labels:
+    {{- include "node-todo.frontend.labels" . | nindent 4 }}
+spec:
+  type: {{ index .Values "frontend" "service" "type" }}
+  ports:
+    - port: {{ index .Values "frontend" "service" "port" }}
+      targetPort: 8080
+  selector:
+    {{- include "node-todo.frontend.matchLabels" . | nindent 4 }}

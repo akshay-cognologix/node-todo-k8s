@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.authapi.fullname" . }}
+  labels:
+    {{- include "node-todo.authapi.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.authapi.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.authapi.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.authapi.matchLabels" . | nindent 8 }}
+        {{- if .Values.authapi.podLabels }}
+        {{ toYaml .Values.authapi.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.authapi.name }}
+          image: "{{ .Values.authapi.image.repository }}:{{ .Values.authapi.image.tag }}"
+          imagePullPolicy: {{ .Values.authapi.image.pullPolicy }}
+          env:
+            - name: AUTH_API_PORT
+              value: "8081"
+            - name: JWT_SECRET
+              value: myfancysecret
+            - name: USERS_API_ADDRESS
+              value: http://users-api:8083
+            - name: ZIPKIN_URL
+              value: http://zipkin:9411/api/v2/spans
+          ports:
+            - containerPort: 8081
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.authapi.resources | nindent 12 }}

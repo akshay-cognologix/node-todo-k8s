@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.logmessage.fullname" . }}
+  labels:
+    {{- include "node-todo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.logmessage.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.logmessage.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.logmessage.matchLabels" . | nindent 8 }}
+        {{- if .Values.logmessage.podLabels}}
+        #{{ toYaml .Values.logmessage.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.logmessage.name }}
+          image: "{{ .Values.logmessage.image.repository }}:{{ .Values.logmessage.image.tag }}"
+          imagePullPolicy: {{ .Values.logmessage.image.pullPolicy }}
+          env:
+            - name: REDIS_HOST
+              value: redis-queue
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_CHANNEL
+              value: log_channel
+            - name: ZIPKIN_URL
+              value: http://zipkin:9411/api/v1/spans
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.logmessage.resources | nindent 12 }}

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "node-todo.redisqueue.fullname" . }}
+  labels:
+    {{- include "node-todo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.redisqueue.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "node-todo.redisqueue.matchLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "node-todo.redisqueue.matchLabels" . | nindent 8 }}
+        {{- if .Values.redisqueue.podLabels}}
+       # {{ toYaml .Values.redisqueue.podLabels | nindent 8 }}
+        {{- end}}
+    spec:
+      # {{- with .Values.imagePullSecrets }}
+      # imagePullSecrets:
+      #   {{- toYaml . | nindent 8 }}
+      # {{- end }}
+      containers:
+        - name: {{ template "node-todo.name" . }}-{{ .Values.redisqueue.name }}
+          image: "{{ .Values.redisqueue.image.repository }}:{{ .Values.redisqueue.image.tag }}"
+          imagePullPolicy: {{ .Values.redisqueue.image.pullPolicy }}
+          ports:
+            - containerPort: 6379
+          restartPolicy: Always
+          resources:
+            {{- toYaml .Values.redisqueue.resources | nindent 12 }}
