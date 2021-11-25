@@ -31,13 +31,14 @@ spec:
             - name: TODO_API_PORT
               value: "8082"
             - name: REDIS_HOST
-              value: redis-queue
+              value: {{ template "node-todo.redisqueue.fullname" . }}
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_CHANNEL
               value: log_channel
             - name: ZIPKIN_URL
-              value: http://zipkin:9411/api/v2/spans
+              #value: http://zipkin:9411/api/v2/spans
+              value: http://{{ template "node-todo.zipkin.fullname" . }}:9411/api/v2/spans
           ports:
             - containerPort: 8082
           resources:

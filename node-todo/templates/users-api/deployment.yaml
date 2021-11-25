@@ -31,7 +31,7 @@ spec:
             - name: SERVER_PORT
               value: "8083"
             - name: SPRING_ZIPKIN_BASE_URL
-              value: http://zipkin:9411
+              value: http://{{ template "node-todo.zipkin.fullname" . }}:9411
           ports:
             - containerPort: 8083
           resources:

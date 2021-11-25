@@ -31,11 +31,14 @@ spec:
             - name: JWT_SECRET
               value: myfancysecret
             - name: USERS_API_ADDRESS
-              value: http://users-api:8083
+              #value: http://users-api:8083
+              value: http://{{ template "node-todo.usersapi.fullname" . }}:8083
             - name: ZIPKIN_URL
-              value: http://zipkin:9411/api/v2/spans
+              #value: http://zipkin:9411/api/v2/spans
+              value: http://{{ template "node-todo.zipkin.fullname" . }}:9411/api/v2/spans
           ports:
             - containerPort: 8081
           resources:
             {{- toYaml .Values.authapi.resources | nindent 12 }}
       restartPolicy: Always      
+

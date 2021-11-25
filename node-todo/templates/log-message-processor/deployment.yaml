@@ -27,13 +27,14 @@ spec:
           imagePullPolicy: {{ .Values.logmessage.image.pullPolicy }}
           env:
             - name: REDIS_HOST
-              value: redis-queue
+              value: {{ template "node-todo.redisqueue.fullname" . }}
             - name: REDIS_PORT
               value: "6379"
             - name: REDIS_CHANNEL
               value: log_channel
             - name: ZIPKIN_URL
-              value: http://zipkin:9411/api/v1/spans
+              #value: http://zipkin:9411/api/v1/spans
+              value: http://{{ template "node-todo.zipkin.fullname" . }}:9411/api/v1/spans
           resources:
             {{- toYaml .Values.logmessage.resources | nindent 12 }}
       restartPolicy: Always
