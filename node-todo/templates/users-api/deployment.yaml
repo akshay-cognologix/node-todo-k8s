@@ -34,6 +34,6 @@ spec:
               value: http://zipkin:9411
           ports:
             - containerPort: 8083
-          restartPolicy: Always
           resources:
             {{- toYaml .Values.usersapi.resources | nindent 12 }}
+      restartPolicy: Always      

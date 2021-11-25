@@ -28,6 +28,6 @@ spec:
           ports:
             - containerPort: 9411
             - containerPort: 9411
-          restartPolicy: Always
           resources:
             {{- toYaml .Values.zipkin.resources | nindent 12 }}
+      restartPolicy: Always      

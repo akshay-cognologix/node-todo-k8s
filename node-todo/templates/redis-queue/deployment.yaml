@@ -27,6 +27,6 @@ spec:
           imagePullPolicy: {{ .Values.redisqueue.image.pullPolicy }}
           ports:
             - containerPort: 6379
-          restartPolicy: Always
           resources:
             {{- toYaml .Values.redisqueue.resources | nindent 12 }}
+      restartPolicy: Always      

@@ -14,7 +14,7 @@ spec:
       labels:
         {{- include "node-todo.authapi.matchLabels" . | nindent 8 }}
         {{- if .Values.authapi.podLabels }}
-        {{ toYaml .Values.authapi.podLabels | nindent 8 }}
+        # {{ toYaml .Values.authapi.podLabels | nindent 8 }}
         {{- end}}
     spec:
       # {{- with .Values.imagePullSecrets }}
@@ -36,6 +36,6 @@ spec:
               value: http://zipkin:9411/api/v2/spans
           ports:
             - containerPort: 8081
-          restartPolicy: Always
           resources:
             {{- toYaml .Values.authapi.resources | nindent 12 }}
+      restartPolicy: Always      

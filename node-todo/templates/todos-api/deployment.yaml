@@ -40,6 +40,6 @@ spec:
               value: http://zipkin:9411/api/v2/spans
           ports:
             - containerPort: 8082
-          restartPolicy: Always
           resources:
             {{- toYaml .Values.todosapi.resources | nindent 12 }}
+      restartPolicy: Always      
