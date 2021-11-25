@@ -9,7 +9,7 @@ authapi:
     repository: akshaycgnlxdevops/auth-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: auth-api
   imagePullSecrets: []
   nameOverride: ""
@@ -83,7 +83,7 @@ frontend:
     repository: akshaycgnlxdevops/frontend
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: frontend
   imagePullSecrets: []
   nameOverride: ""
@@ -157,7 +157,7 @@ logmessage:
     repository: akshaycgnlxdevops/log-message-processor
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: log-message-processor
   imagePullSecrets: []
   nameOverride: ""
@@ -231,7 +231,7 @@ redisqueue:
     repository: redis
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: redis-queue
   imagePullSecrets: []
   nameOverride: ""
@@ -305,7 +305,7 @@ todosapi:
     repository: akshaycgnlxdevops/todos-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: todos-api
   imagePullSecrets: []
   nameOverride: ""
@@ -379,7 +379,7 @@ usersapi:
     repository: akshaycgnlxdevops/users-api
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: users-api
   imagePullSecrets: []
   nameOverride: ""
@@ -453,7 +453,7 @@ zipkin:
     repository: openzipkin/zipkin
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: latest
   name: zipkin
   imagePullSecrets: []
   nameOverride: ""
